@@ -6,7 +6,7 @@ const cors = require('cors');
 const app = express();
 
 // Import routes
-//...
+const authRoutes = require('./router/auth');
 
 // Congfigure body parser
 app.use(bodyParser.urlencoded({extended: true}));
@@ -20,7 +20,7 @@ app.use(express.static("uploads"));
 app.use(cors());
 
 
-// Configure routes
-//...
+// Configure routings
+app.use(`/api/${API_VERSION}`, authRoutes);
 
 module.exports = app;
