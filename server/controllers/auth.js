@@ -72,4 +72,80 @@ async function login(req, res) {
     }
 }
 
-module.exports = { register, login };
+// function refreshAccessToken(req, res){
+//     const {token} = req.body;
+    
+//     if(!token) return res.status(400).send({ msg: "Token is required" });
+
+//     const user_id = jwt.decoded(token);
+
+//     User.findById(user_id, (err, user) => {
+//         if(err){
+//             res.status(500).send({ msg: "Server error"});
+//         }else{
+//             res.status(200).send({
+//                 access: jwt.createAccessToken(user)
+//             });
+//         }
+//     })
+// }
+
+
+// async function refreshAccessToken(req, res) {
+//     const { token } = req.body;
+
+//     if (!token) return res.status(400).send({ msg: "Token is required" });
+
+//     try {
+//         const decodedToken = jwt.decode(token);
+
+//         const user = await User.findById(decodedToken.user_id);
+//         if (!user) {
+//             return res.status(404).send({ msg: "User not found" });
+//         }
+
+//         // Assuming you have your own function to create access tokens
+//         const newAccessToken = jwt.sign(
+//             { user_id: user._id }, 
+//             process.env.JWT_SECRET,
+//             { expiresIn: "1h" }
+//         );
+
+//         res.status(200).send({ access: newAccessToken });
+
+//     } catch (err) {
+//         console.error("Error refreshing token:", err);
+//         res.status(401).send({ msg: "Invalid or expired token" });
+//     }
+// }
+
+async function refreshAccessToken(req, res) {
+    const { token } = req.body;
+
+    if (!token) return res.status(400).send({ msg: "Token is required" });
+
+    try {
+        // Use your jwt utility to decode/verify the token and extract the user_id
+        const payload = jwt.verify(token); // or jwt.verify(token), depending on your utility
+    
+        const user_id = payload.user_id || payload.id || payload._id; // adjust according to your payload structure
+        if (!user_id) return res.status(401).send({ msg: "Invalid token payload" });
+        
+        const user = await User.findById(user_id);
+        if (!user) {
+            return res.status(404).send({ msg: "User not found" });
+        }
+
+        // Use your jwt utility to create a new access token
+        const newAccessToken = jwt.createAccessToken(user);
+
+        res.status(200).send({ access: newAccessToken });
+
+    } catch (err) {
+        console.error("Error refreshing token:", err);
+        res.status(401).send({ msg: "Invalid or expired token" });
+    }
+}
+
+
+module.exports = { register, login, refreshAccessToken };

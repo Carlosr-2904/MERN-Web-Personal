@@ -30,12 +30,17 @@ function createRefreshToken(user) {
     return jwt.sign(payload, JWT_SECRET_KEY);
 }
 
-function decoder(Token){
+function decoded(Token){
     return jwt.decode(token, JWT_SECRET_KEY, true);
+}
+
+function verify(token) {
+    return jwt.verify(token, JWT_SECRET_KEY)
 }
 
 module.exports = {
     createAccessToken,
     createRefreshToken,
-    decoder
+    decoded,
+    verify
 }
