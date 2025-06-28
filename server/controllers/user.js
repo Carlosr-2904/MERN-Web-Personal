@@ -25,8 +25,6 @@ async function getUsers(req, res) {
         response = await User.find({active});
     }
 
-    console.log(response);
-
     res.status(200).send(response);
 }
 
