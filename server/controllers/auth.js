@@ -28,7 +28,7 @@ function register(req, res) {
 
     try {
         const userStorage = user.save();
-        res.status(200).send({ user});
+        res.status(200).send({ userStorage});
     }catch (error) {
         res.status(400).send({ msg: "Error creating user" }, error);
     }
