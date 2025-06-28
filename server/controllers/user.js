@@ -14,6 +14,23 @@ async function getMe(req, res) {
 
 }
 
+
+async function getUsers(req, res) {
+
+    const {active} = req.query;
+    let response=null
+    if (active === undefined) {
+        response = await User.find();
+    } else {
+        response = await User.find({active});
+    }
+
+    console.log(response);
+
+    res.status(200).send(response);
+}
+
 module.exports = {
-    getMe
+    getMe,
+    getUsers
 }
