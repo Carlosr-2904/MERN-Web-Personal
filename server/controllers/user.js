@@ -12,8 +12,6 @@ async function getMe(req, res) {
     }else{
         res.status(200).send(response)
     }
-
-
 }
 
 
@@ -55,21 +53,6 @@ async function createUser(req, res){
 }
 
 
-// async function updateUser(req, res) {
-//     const {id} = req.params;
-//     const userData = req.body;
-
-//     User.findByIdAndUpdate({_id: id}, userData, (error) => {
-//         if (error) {
-//             return res.status(500).send({msg: "Error updating user"});
-//         }else{
-//             return res.status(200).send({msg: "User updated successfully"});
-//         }
-//     })
-
-//     // Password
-//     // Avatar
-// }
 async function updateUser(req, res) {
     const { id } = req.params;
     const userData = req.body;
@@ -94,7 +77,36 @@ async function updateUser(req, res) {
         return res.status(500).send({ msg: "Error updating user"});
     }
 
-    // TODO: Add password and avatar update logic here
+    
+}
+
+
+// async function deleteUser(req, res) {
+//     const {id} = req.params;
+
+//     User.findByIdAndDelete(id, (error) => {
+//         if (error) {
+//             return res.status(400).send({msg: "Error deleting user"});
+//         } else {
+//             return res.status(200).send({msg: "User deleted successfully"});
+//         }
+//     })
+// }
+
+async function deleteUser(req, res) {
+    const { id } = req.params;
+
+    try {
+        const deletedUser = await User.findByIdAndDelete(id);
+
+        if (!deletedUser) {
+            return res.status(404).send({ msg: "User not found" });
+        }
+
+        return res.status(200).send({ msg: "User deleted successfully" });
+    } catch (error) {
+        return res.status(400).send({ msg: "Error deleting user" });
+    }
 }
 
 
@@ -102,5 +114,6 @@ module.exports = {
     getMe,
     getUsers,
     createUser,
-    updateUser
+    updateUser,
+    deleteUser
 }
