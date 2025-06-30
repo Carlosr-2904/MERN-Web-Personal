@@ -1,5 +1,6 @@
 const bcrypt = require('bcryptjs');
 const User = require('../models/user');
+const image = require("../utils/image");
 
 async function getMe(req, res) {
     const {user_id} = req.user;
@@ -40,15 +41,15 @@ async function createUser(req, res){
     user.password = hashPassword;
 
     if(req.files.avatar){
-        //To do
-        console.log("Process avatar");
+        const imagePath = image.getFilePath(req.files.avatar);
+        user.avatar = imagePath;
     }
 
     try {
         const userStored = await user.save();
         return res.status(201).send({ userStored });
     } catch (error) {
-        return res.status(400).send({ msg: "Error creating user", error });
+        return res.status(400).send({ msg: "Error creating user" });
     }
 
 }

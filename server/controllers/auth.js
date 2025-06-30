@@ -3,6 +3,7 @@ const User = require("../models/user");
 const bcrypt = require("bcryptjs");
 const jwt = require("../utils/jwt");
 
+
 function register(req, res) {
     const {firstname, lastname, email, password}= req.body;
     // console.log(req.body);
@@ -30,7 +31,7 @@ function register(req, res) {
         const userStorage = user.save();
         res.status(200).send({ userStorage});
     }catch (error) {
-        res.status(400).send({ msg: "Error creating user" }, error);
+        res.status(400).send({ msg: "Error creating user" });
     }
 
 }
@@ -72,52 +73,6 @@ async function login(req, res) {
     }
 }
 
-// function refreshAccessToken(req, res){
-//     const {token} = req.body;
-    
-//     if(!token) return res.status(400).send({ msg: "Token is required" });
-
-//     const user_id = jwt.decoded(token);
-
-//     User.findById(user_id, (err, user) => {
-//         if(err){
-//             res.status(500).send({ msg: "Server error"});
-//         }else{
-//             res.status(200).send({
-//                 access: jwt.createAccessToken(user)
-//             });
-//         }
-//     })
-// }
-
-
-// async function refreshAccessToken(req, res) {
-//     const { token } = req.body;
-
-//     if (!token) return res.status(400).send({ msg: "Token is required" });
-
-//     try {
-//         const decodedToken = jwt.decode(token);
-
-//         const user = await User.findById(decodedToken.user_id);
-//         if (!user) {
-//             return res.status(404).send({ msg: "User not found" });
-//         }
-
-//         // Assuming you have your own function to create access tokens
-//         const newAccessToken = jwt.sign(
-//             { user_id: user._id }, 
-//             process.env.JWT_SECRET,
-//             { expiresIn: "1h" }
-//         );
-
-//         res.status(200).send({ access: newAccessToken });
-
-//     } catch (err) {
-//         console.error("Error refreshing token:", err);
-//         res.status(401).send({ msg: "Invalid or expired token" });
-//     }
-// }
 
 async function refreshAccessToken(req, res) {
     const { token } = req.body;
