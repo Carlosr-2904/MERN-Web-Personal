@@ -54,8 +54,53 @@ async function createUser(req, res){
 
 }
 
+
+// async function updateUser(req, res) {
+//     const {id} = req.params;
+//     const userData = req.body;
+
+//     User.findByIdAndUpdate({_id: id}, userData, (error) => {
+//         if (error) {
+//             return res.status(500).send({msg: "Error updating user"});
+//         }else{
+//             return res.status(200).send({msg: "User updated successfully"});
+//         }
+//     })
+
+//     // Password
+//     // Avatar
+// }
+async function updateUser(req, res) {
+    const { id } = req.params;
+    const userData = req.body;
+
+    if (userData.password) {
+        const salt = bcrypt.genSaltSync(10);
+        const hashPassword = bcrypt.hashSync(userData.password, salt);
+        userData.password = hashPassword; // Hash the password before saving
+    }else{
+        delete userData.password; // Remove password if not provided
+    }
+
+    if (req.files.avatar){
+        const imagePath = image.getFilePath(req.files.avatar);
+        userData.avatar = imagePath; // Update avatar path
+    }
+
+    try {
+        await User.findByIdAndUpdate(id, userData, { new: true }); // optional: new: true returns updated doc
+        return res.status(200).send({ msg: "User updated successfully" });
+    } catch (error) {
+        return res.status(500).send({ msg: "Error updating user"});
+    }
+
+    // TODO: Add password and avatar update logic here
+}
+
+
 module.exports = {
     getMe,
     getUsers,
-    createUser
+    createUser,
+    updateUser
 }
