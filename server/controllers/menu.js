@@ -27,7 +27,23 @@ async function getMenus(req, res) {
     
 }
 
+async function updateMenu(req, res) {
+    const { id } = req.params;
+    const menuData = req.body;
+
+    try {
+        const menuUpdated = await Menu.findByIdAndUpdate(id, menuData, { new: true });
+        if (!menuUpdated) {
+            return res.status(404).send({ msg: "Menu not found" });
+        }
+        return res.status(200).send({ menuUpdated });
+    } catch (err) {
+        return res.status(400).send({ msg: "Error updating menu" });
+    }
+}
+
 module.exports = {
     createMenu,
-    getMenus
+    getMenus,
+    updateMenu
 }
