@@ -81,18 +81,6 @@ async function updateUser(req, res) {
 }
 
 
-// async function deleteUser(req, res) {
-//     const {id} = req.params;
-
-//     User.findByIdAndDelete(id, (error) => {
-//         if (error) {
-//             return res.status(400).send({msg: "Error deleting user"});
-//         } else {
-//             return res.status(200).send({msg: "User deleted successfully"});
-//         }
-//     })
-// }
-
 async function deleteUser(req, res) {
     const { id } = req.params;
 
