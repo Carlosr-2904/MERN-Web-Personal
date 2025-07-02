@@ -15,14 +15,17 @@ async function createCourse(req, res) {
     }
 }
 
+async function getCourse(req, res) {
+    try {
+        const courses = await Course.find();
+        return res.status(200).send(courses);
+    } catch (err) {
+        return res.status(400).send({ msg: "Error retrieving courses", error: err.message });
+    }
+}
 
-
-// async function getCourses(req, res) {
-//     const course = new Course(req.body);
-
-//     const imagePath =image.getFilePath(req.files.miniature);
-// }
 
 module.exports = { 
-    createCourse 
+    createCourse, 
+    getCourse
 }
