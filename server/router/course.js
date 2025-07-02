@@ -7,5 +7,6 @@ const md_upload = multiparty({ uploadDir: './uploads/course' });
 const api = express.Router();
 
 //APIs ...
+api.post('/course', [md_auth.asureAuth, md_upload], courseController.createCourse);
 
 module.exports = api;
