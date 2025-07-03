@@ -15,14 +15,23 @@ async function createCourse(req, res) {
     }
 }
 
+
 async function getCourse(req, res) {
+    const {page =1, limit=10} = req.query;
+    // Example of pagination options
+    const options = {
+        page: parseInt(page),
+        limit: parseInt(limit),
+    };
+
     try {
-        const courses = await Course.find();
+        const courses = await Course.paginate({}, options);
         return res.status(200).send(courses);
     } catch (err) {
         return res.status(400).send({ msg: "Error retrieving courses", error: err.message });
     }
 }
+
 
 
 module.exports = { 
