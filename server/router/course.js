@@ -9,5 +9,6 @@ const api = express.Router();
 //APIs ...
 api.post('/course', [md_auth.asureAuth, md_upload], courseController.createCourse);
 api.get('/course', courseController.getCourse);
+api.patch('/course/:id', [md_auth.asureAuth, md_upload], courseController.updateCourse);
 
 module.exports = api;
