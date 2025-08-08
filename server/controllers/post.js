@@ -1,3 +1,4 @@
+const { get } = require('express/lib/response');
 const Post = require('../models/post');
 const image = require('../utils/image');
 
@@ -16,7 +17,7 @@ async function createPost(req, res) {
     }
 }
 
-async function getPost(req, res) {
+async function getPosts(req, res) {
     const { page = 1, limit = 10 } = req.query;
     const options = {
         page: parseInt(page),
@@ -59,8 +60,37 @@ async function updatePost(req, res) {
     }
 }
 
+async function deletePost(req, res) {
+    const { id } = req.params;
+    try{
+        const deletedPost = await Post.findByIdAndDelete(id)
+
+        if(!deletedPost) {
+            return res.status(404).send({ msg: "Post not found" });
+        }
+        return res.status(200).send({ msg: "Post deleted successfully" });
+    } catch (error) {
+        res.status(400).send({ msg: "Error deleting post", error: error.message });
+    }
+}
+
+async function getPost(req, res) {
+    const { path } = req.params;
+    try {
+        const postStored = await Post.findOne({ path})
+        if (!postStored) {
+            return res.status(404).send({ msg: "Post not found" });
+        }
+        return res.status(200).send({ post: postStored });
+    } catch (err) {
+        return res.status(500).send({ msg: "Server error" });
+    }
+}
+
 module.exports = {
     createPost,
-    getPost,
-    updatePost
+    getPosts,
+    updatePost,
+    deletePost,
+    getPost
 }
