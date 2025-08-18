@@ -1,10 +1,10 @@
-const mongoose = requires("mongoose")
+const mongoose = require("mongoose")
 
-const NewsletterSchem = mongoose.schema({
+const NewsletterSchema = mongoose.Schema({
     email:{
         type: String,
         unique: true
     }
 })
 
-module.exports=mongoose.model("Newsletter", NewsletterSchem)
+module.exports=mongoose.model("Newsletter", NewsletterSchema)
