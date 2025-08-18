@@ -1,10 +1,11 @@
 const express = require('express')
-const newsletterController = require('../controllers/newsletter');
+const NewsletterController = require('../controllers/newsletter');
 const md_auth = require('../middlewares/authenticated');
 
 const api = express.Router();
 
 //Routes
+api.post('/newsletter', NewsletterController.suscribeEmail);
 
 
 module.exports = api;
