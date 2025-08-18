@@ -40,12 +40,27 @@ async function getEmails(req, res) {
 
         return res.status(200).send(newsletters);
     } catch (err) {
-        console.log(err);
         return res.status(500).send({ msg: "Error retrieving emails", error: err.message });
+    }
+}
+
+async function deleteEmail(req, res) {
+    const{id }= req.params
+    try{
+        const deletedNewsletter = await newsletter.findByIdAndDelete(id)
+
+        if(!deletedNewsletter){
+            return res.status(404).send({msg: "Email not found"});
+        }
+
+        return res.status(200).send({msg: "Email deleted successfully"});
+    } catch (err) {
+        return res.status(500).send({ msg: "Error deleting email", error: err.message });
     }
 }
 
 module.exports = {
     suscribeEmail,
-    getEmails
+    getEmails,
+    deleteEmail
 };
