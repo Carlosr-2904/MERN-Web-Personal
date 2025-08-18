@@ -6,6 +6,6 @@ const api = express.Router();
 
 //Routes
 api.post('/newsletter', NewsletterController.suscribeEmail);
-
+api.get('/newsletter', [md_auth.asureAuth], NewsletterController.getEmails);
 
 module.exports = api;

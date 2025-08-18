@@ -1,3 +1,4 @@
+const { get } = require('express/lib/response');
 const newsletter = require ('../models/newsletter');
 
 // Functions
@@ -26,6 +27,25 @@ async function suscribeEmail(req, res) {
 }
 
 
+async function getEmails(req, res) {
+    const { page = 1, limit = 10 } = req.query;
+
+    const options = {
+        page: parseInt(page),
+        limit: parseInt(limit),
+        sort: { created_at: "desc" }
+    };
+    try {
+        const newsletters = await newsletter.paginate({}, options);
+
+        return res.status(200).send(newsletters);
+    } catch (err) {
+        console.log(err);
+        return res.status(500).send({ msg: "Error retrieving emails", error: err.message });
+    }
+}
+
 module.exports = {
-    suscribeEmail
+    suscribeEmail,
+    getEmails
 };
