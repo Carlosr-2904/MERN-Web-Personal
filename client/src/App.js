@@ -1,13 +1,15 @@
 import React from 'react'
-
-import { BrowserRouter } from 'react-router-dom'
-import {AdminRouter, WebRouter} from "./router"  
+import { Button } from 'semantic-ui-react'
 
 export default function App() {
   return (
-    <BrowserRouter>
-      <WebRouter />
-      <AdminRouter />
-    </BrowserRouter>
+    <div>
+      <h1>Mi Aplicación MERN</h1>
+
+      <div>
+        <Button primary>Primary</Button>
+        <Button secondary>Secondary</Button>
+      </div>
+    </div>
   )
 }

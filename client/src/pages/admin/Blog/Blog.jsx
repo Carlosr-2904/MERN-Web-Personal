@@ -1,9 +1,0 @@
-import React from 'react'
-
-export function Blog() {
-  return (
-    <div>
-      <h1>Estamos en BLOG</h1>
-    </div>
-  )
-}
